@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Campsite = require("../models/campsite");
-const cities = require ('./cities')
+const cities = require("./cities");
+const { descriptors, places } = require("./seedHelpers");
 
 mongoose.connect("mongodb://localhost:27017/lightOut", {
   useNewUrlParser: true,
@@ -14,6 +15,8 @@ db.once("open", () => {
   console.log("Database Connected");
 });
 
+const sample = (array) => array[Math.floor(Math.random() * array.length)];
+
 const seedDB = async () => {
   await Campsite.deleteMany({});
   for (i = 0; i < 50; i++) {
@@ -21,6 +24,7 @@ const seedDB = async () => {
     const city = cities[random1000];
     const camp = new Campsite({
       location: `${city.city}, ${city.state}`,
+      title: `${sample(descriptors)} ${sample(places)}`,
     });
     await camp.save();
   }
