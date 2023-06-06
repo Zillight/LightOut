@@ -17,7 +17,7 @@ db.once("open", () => {
 });
 
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "/views"));
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -32,18 +32,23 @@ app.get("/", (req, res) => {
 //   res.send(site);
 // });
 
-app.get("/makeCampsite", async (req, res) => {
-  const existingCampsite = await Campsite.findOne({ title: "Jabi Lake Camp" });
-  if (existingCampsite) {
-    res.send("Campsite already exists");
-  } else {
-    const site = new Campsite({
-      title: "Jabi Lake Camp",
-      description: "Affordable camping",
-    });
-    await site.save();
-    res.send(site);
-  }
+// app.get("/makeCampsite", async (req, res) => {
+//   const existingCampsite = await Campsite.findOne({ title: "Jabi Lake Camp" });
+//   if (existingCampsite) {
+//     res.send("Campsite already exists");
+//   } else {
+//     const site = new Campsite({
+//       title: "Jabi Lake Camp",
+//       description: "Affordable camping",
+//     });
+//     await site.save();
+//     res.send(site);
+//   }
+// });
+
+app.get("/campsite", async (req, res) => {
+  const campsites = await Campsite.find({});
+  res.render("campsites/index", { campsites });
 });
 
 app.listen(3000, () => {
